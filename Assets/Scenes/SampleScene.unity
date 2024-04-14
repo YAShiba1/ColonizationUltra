@@ -153,7 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _flagPrefab: {fileID: 8963335963126939647, guid: d9bcf340ef17eaa4795cccbe45cd0757, type: 3}
-  _selectionController: {fileID: 963194229}
+  _baseSelection: {fileID: 963194229}
 --- !u!4 &245692822
 Transform:
   m_ObjectHideFlags: 0
@@ -784,7 +784,7 @@ MonoBehaviour:
   _basePrefab: {fileID: 5461623775555321736, guid: 56d4676442ceedb4fac332a530cb753e, type: 3}
   _baseSpawnPoint: {fileID: 1501210079}
   _goldManager: {fileID: 1779060388}
-  _botSpawner: {fileID: 1800697594}
+  _botFactory: {fileID: 1800697594}
 --- !u!4 &1501210079
 Transform:
   m_ObjectHideFlags: 0
@@ -952,7 +952,7 @@ GameObject:
   - component: {fileID: 1800697595}
   - component: {fileID: 1800697594}
   m_Layer: 0
-  m_Name: BotSpawner
+  m_Name: BotFactory
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

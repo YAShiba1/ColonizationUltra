@@ -6,7 +6,7 @@ public class BaseSpawner : MonoBehaviour
     [SerializeField] private Base _basePrefab;
     [SerializeField] private Transform _baseSpawnPoint;
     [SerializeField] private GoldPositionManager _goldManager;
-    [SerializeField] private BotSpawner _botSpawner;
+    [SerializeField] private BotFactory _botFactory;
 
     private void Start()
     {
@@ -17,7 +17,7 @@ public class BaseSpawner : MonoBehaviour
     {
         Base goldBase = Instantiate(_basePrefab, baseSpawnPosition, Quaternion.identity);
 
-        goldBase.Initialize(this, _goldManager, _botSpawner);
+        goldBase.Initialize(this, _goldManager, _botFactory);
 
         return goldBase;
     }
@@ -48,7 +48,7 @@ public class BaseSpawner : MonoBehaviour
 
         for (int i = 0; i < AmountOfStartingBots; i++)
         {
-            startBase.AddBot(_botSpawner.Spawn(startBase.BotSpawnPoint));
+            startBase.AddBot(_botFactory.Spawn(startBase.BotSpawnPoint));
         }
     }
 }

@@ -51,14 +51,7 @@ public class Bot : MonoBehaviour
     {
         _currentTarget = target;
 
-        if(_currentTarget.TryGetComponent(out Gold gold))
-        {
-            _isTargetGold = true;
-        }
-        else
-        {
-            _isTargetGold = false;
-        }
+        _isTargetGold = _currentTarget.TryGetComponent(out Gold gold);
     }
 
     private void MoveTo()

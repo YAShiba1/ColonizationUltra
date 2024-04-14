@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SelectionController : MonoBehaviour
+public class BaseSelection : MonoBehaviour
 {
     [SerializeField] private LayerMask _layerMask;
     [SerializeField] private Camera _mainCamera;
@@ -13,7 +13,7 @@ public class SelectionController : MonoBehaviour
 
     public Ray Ray { get; private set; }
 
-    public void TrySelectBase()
+    public void TrySelect()
     {
         Ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
 

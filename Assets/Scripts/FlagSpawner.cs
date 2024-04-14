@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 public class FlagSpawner : MonoBehaviour
 {
     [SerializeField] private Flag _flagPrefab;
-    [SerializeField] private SelectionController _selectionController;
+    [SerializeField] private BaseSelection _baseSelection;
 
     private Flag _flag;
     private bool _isFlagSpawned;
@@ -12,14 +12,14 @@ public class FlagSpawner : MonoBehaviour
     private void Update()
     {
         TrySpawnFlag();
-        _selectionController.TrySelectBase();
+        _baseSelection.TrySelect();
     }
 
     private void TrySpawnFlag()
     {
-        if (_selectionController.IsBaseSelected == true && Input.GetMouseButtonDown(0))
+        if (_baseSelection.IsBaseSelected == true && Input.GetMouseButtonDown(0))
         {
-            if (Physics.Raycast(_selectionController.Ray, out RaycastHit hit, Mathf.Infinity, _selectionController.LayerMask))
+            if (Physics.Raycast(_baseSelection.Ray, out RaycastHit hit, Mathf.Infinity, _baseSelection.LayerMask))
             {
                 GameObject hitObject = hit.collider.gameObject;
 
@@ -36,7 +36,7 @@ public class FlagSpawner : MonoBehaviour
 
                     _flag = CreateFlag(flagSpawnPosition);
 
-                    _selectionController.ClickedBase.SetFlag(_flag);
+                    _baseSelection.ClickedBase.SetFlag(_flag);
 
                     _isFlagSpawned = true;
                 }

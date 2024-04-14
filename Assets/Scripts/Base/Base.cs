@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.EventSystems;
 
 public class Base : MonoBehaviour
 {
@@ -12,7 +11,7 @@ public class Base : MonoBehaviour
 
     private List<Bot> _bots;
 
-    private BotSpawner _botSpawner;
+    private BotFactory _botFactory;
     private BaseSpawner _baseSpawner;
     private GoldPositionManager _goldManager;
 
@@ -37,11 +36,11 @@ public class Base : MonoBehaviour
         TryBuyNewBot();
     }
 
-    public void Initialize(BaseSpawner baseSpawner, GoldPositionManager goldManager, BotSpawner botSpawner)
+    public void Initialize(BaseSpawner baseSpawner, GoldPositionManager goldManager, BotFactory botFactory)
     {
         _baseSpawner = baseSpawner ?? throw new ArgumentNullException(nameof(baseSpawner));
         _goldManager = goldManager ?? throw new ArgumentNullException(nameof(goldManager));
-        _botSpawner = botSpawner ?? throw new ArgumentNullException(nameof(botSpawner));
+        _botFactory = botFactory ?? throw new ArgumentNullException(nameof(botFactory));
     }
 
     public void SetFlag(Flag flag)
@@ -75,13 +74,13 @@ public class Base : MonoBehaviour
 
         if (_goldManager.GetFiltredGoldsPositionsCount > 0)
         {
-            TryToSendFreeBotForGold();
+            TrySendFreeBotForGold();
         }
     }
 
-    private void TryToSendFreeBotForGold()
+    private void TrySendFreeBotForGold()
     {
-        Bot freeBot = TryGetFreeBot();
+        Bot freeBot = _botFactory.GetFreeBot(_bots);
 
         if (freeBot != null && _goldManager.GetFiltredGoldsPositionsCount > 0)
         {
@@ -101,14 +100,14 @@ public class Base : MonoBehaviour
 
         if (_flag != null)
         {
-            Bot bot = TryGetFreeBot();
+            Bot freeBot = _botFactory.GetFreeBot(_bots);
 
-            if (bot != null && _bots.Count > MinimumNumberOfBaseBots && _goldCount >= NewBasePrice)
+            if (freeBot != null && _bots.Count > MinimumNumberOfBaseBots && _goldCount >= NewBasePrice)
             {
                 _goldCount -= NewBasePrice;
                 GoldChanged?.Invoke(_goldCount);
 
-                _botForNewColonyBase = bot;
+                _botForNewColonyBase = freeBot;
                 _botForNewColonyBase.SetTarget(_flag.transform);
                 _bots.Remove(_botForNewColonyBase);
 
@@ -125,31 +124,11 @@ public class Base : MonoBehaviour
 
         if (_goldCount >= BotPrice && _bots.Count <= _maximumNumberOfBots - 1)
         {
-            AddBot(_botSpawner.Spawn(_botSpawnPoint));
+            AddBot(_botFactory.Spawn(_botSpawnPoint));
 
             _goldCount -= BotPrice;
             GoldChanged?.Invoke(_goldCount);
         }
-    }
-
-    private Bot TryGetFreeBot()
-    {
-        Bot freeBot = null;
-
-        if (_bots != null && _bots.Count > 0)
-        {
-            foreach (Bot bot in _bots)
-            {
-                if (bot.CurrentTarget == null)
-                {
-                    freeBot = bot;
-
-                    break;
-                }
-            }
-        }
-
-        return freeBot;
     }
 
     private void OnBotFlagReached()

@@ -467,7 +467,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _botSpawnPoint: {fileID: 2863847053740739114}
   _scanner: {fileID: 2863847053046821544}
-  _maximumNumberOfBots: 2
+  _maximumNumberOfBots: 3
 --- !u!1 &2863847053740739115
 GameObject:
   m_ObjectHideFlags: 0
